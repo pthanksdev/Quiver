@@ -1,0 +1,51 @@
+{
+  "name": "@quiver-lib/async",
+  "version": "1.0.0",
+  "description": "Async and data fetching hooks for Quiver",
+  "keywords": [
+    "react",
+    "hooks",
+    "fetch",
+    "async",
+    "data"
+  ],
+  "license": "MIT",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "dev": "vite build --watch",
+    "clean": "rm -rf dist"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0"
+  },
+  "devDependencies": {
+    "@quiver-lib/tsconfig": "workspace:*",
+    "@quiver-lib/eslint-config": "workspace:*",
+    "@testing-library/react": "^15.0.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11",
+    "vitest": "^1.5.3",
+    "jsdom": "^24.0.0",
+    "@vitest/coverage-v8": "^1.5.3"
+  }
+}

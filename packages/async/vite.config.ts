@@ -1,0 +1,25 @@
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
+
+export default defineConfig({
+  plugins: [react()],
+  build: {
+    lib: {
+      entry: resolve(__dirname, 'src/index.ts'),
+      name: 'QuiverAsync',
+      formats: ['es', 'cjs'],
+      fileName: (format) => format === 'es' ? 'index.esm.js' : 'index.js',
+    },
+    rollupOptions: {
+      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      output: { globals: { react: 'React', 'react-dom': 'ReactDOM' } },
+    },
+    sourcemap: false,
+  },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    coverage: { provider: 'v8', thresholds: { lines: 90 } },
+  },
+});
