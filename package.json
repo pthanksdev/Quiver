@@ -1,0 +1,44 @@
+{
+  "name": "quiver",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The definitive React hooks library — 13 packages, 100+ hooks.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pthanksdev/react-hooks"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "dev": "turbo run dev --parallel",
+    "clean": "turbo run clean",
+    "docs:dev": "cd apps/docs && pnpm storybook",
+    "docs:build": "cd apps/docs && pnpm build-storybook",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo run build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "@testing-library/react": "^15.0.0",
+    "@types/node": "^20.12.7",
+    "@types/react": "^18.3.1",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-unused-imports": "^4.4.1",
+    "jsdom": "^24.0.0",
+    "prettier": "^3.2.5",
+    "ts-morph": "^28.0.0",
+    "turbo": "^1.13.3",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.10",
+    "vitest": "^1.5.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.5"
+}
