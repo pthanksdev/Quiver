@@ -1,0 +1,17 @@
+src/
+tests/
+*.test.ts
+*.test.tsx
+*.security.test.ts
+.env*
+scripts/
+security/
+apps/
+tooling/
+.changeset/
+tsconfig*.json
+vite.config.*
+vitest.config.*
+*.map
+node_modules
+
