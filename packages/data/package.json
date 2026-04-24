@@ -1,6 +1,6 @@
 {
   "name": "@quiver-lib/data",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Data management hooks: virtual lists, tables, sorting, filtering, pagination, CSV export",
   "keywords": [
     "react",

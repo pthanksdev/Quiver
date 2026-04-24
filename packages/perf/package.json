@@ -1,6 +1,6 @@
 {
   "name": "@quiver-lib/perf",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Performance and profiling hooks: LCP, FPS, memory pressure, long tasks",
   "keywords": [
     "react",

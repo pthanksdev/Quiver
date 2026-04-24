@@ -1,6 +1,6 @@
 {
   "name": "@quiver-lib/ai",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "AI and ML integration hooks: LLM streaming, speech recognition, on-device inference",
   "keywords": [
     "react",

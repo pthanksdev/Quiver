@@ -1,6 +1,6 @@
 {
   "name": "@quiver-lib/realtime",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Real-time collaboration hooks: WebSocket, SSE, WebRTC, CRDT, presence",
   "keywords": [
     "react",

@@ -1,6 +1,6 @@
 {
   "name": "@quiver-lib/hardware",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Device and hardware API hooks: Bluetooth, USB, NFC, Gamepad, WebXR, sensors",
   "keywords": [
     "react",

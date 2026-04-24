@@ -1,6 +1,6 @@
 {
   "name": "@quiver-lib/crypto",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Cryptography and security hooks: AES encryption, WebAuthn, HMAC, CSRF, permissions",
   "keywords": [
     "react",
