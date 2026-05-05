@@ -1,0 +1,10 @@
+{
+  "name": "@quiver-lib/tsconfig",
+  "version": "1.0.1",
+  "private": true,
+  "description": "Shared TypeScript configuration for Quiver packages",
+  "files": [
+    "base.json",
+    "react.json"
+  ]
+}
