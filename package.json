@@ -1,6 +1,6 @@
 {
   "name": "quiver",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "The definitive React hooks library — 13 packages, 100+ hooks.",
   "repository": {
