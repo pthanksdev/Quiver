@@ -1,10 +1,11 @@
 import { describe, it, expect } from 'vitest';
+import { renderHook } from '@testing-library/react';
 import { useMounted } from './useMounted';
 
 describe('useMounted', () => {
-  it('should be defined', () => {
-    expect(useMounted).toBeDefined();
+  it('should return true when mounted', () => {
+    const { result } = renderHook(() => useMounted());
+    
+    expect(result.current).toBe(true);
   });
-
-  // TODO: Add robust unit tests for useMounted
 });

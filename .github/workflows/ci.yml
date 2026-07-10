@@ -45,7 +45,7 @@ jobs:
         run: pnpm turbo run test
 
       - name: Security audit (fail on HIGH/CRITICAL)
-        run: npm audit --audit-level=high
+        run: pnpm audit --audit-level=high
         continue-on-error: false
 
   publish:
