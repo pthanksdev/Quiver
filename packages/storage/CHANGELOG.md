@@ -1,5 +1,11 @@
 # @quiver-lib/storage
 
+## 2.0.0
+
+### Major Changes
+
+- updated all
+
 ## 1.0.0
 
 ### Major Changes

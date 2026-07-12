@@ -1,6 +1,6 @@
 {
   "name": "@quiver-lib/ui",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "DOM and browser interaction hooks for Quiver",
   "keywords": [
     "react",
