@@ -1,6 +1,6 @@
 {
   "name": "@quiver-lib/storage",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Browser storage persistence hooks for Quiver",
   "keywords": [
     "react",
