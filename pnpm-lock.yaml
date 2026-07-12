@@ -9,7 +9,7 @@ importers:
   .:
     devDependencies:
       '@changesets/cli':
-        specifier: ^2.27.1
+        specifier: ^2.31.0
         version: 2.31.0(@types/node@20.19.39)
       '@testing-library/react':
         specifier: ^15.0.0
