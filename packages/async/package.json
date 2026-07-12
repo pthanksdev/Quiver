@@ -1,6 +1,6 @@
 {
   "name": "@quiver-lib/async",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Async and data fetching hooks for Quiver",
   "keywords": [
     "react",
