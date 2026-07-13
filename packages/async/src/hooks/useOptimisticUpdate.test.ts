@@ -9,7 +9,7 @@ describe('useOptimisticUpdate', () => {
 
   it('should initialize with committed value', () => {
     const mutate = vi.fn();
-    const { result } = renderHook(() => useOptimisticUpdate('initial', mutate));
+    const { result } = renderHook(() => useOptimisticUpdate<string>('initial', mutate));
     
     expect(result.current.value).toBe('initial');
     expect(result.current.isPending).toBe(false);
@@ -18,7 +18,7 @@ describe('useOptimisticUpdate', () => {
 
   it('should optimistically update and then confirm', async () => {
     const mutate = vi.fn().mockResolvedValue('confirmed');
-    const { result } = renderHook(() => useOptimisticUpdate('initial', mutate));
+    const { result } = renderHook(() => useOptimisticUpdate<string>('initial', mutate));
     
     act(() => {
       void result.current.update('optimistic value');
@@ -43,8 +43,8 @@ describe('useOptimisticUpdate', () => {
     const mutate = vi.fn().mockRejectedValue(error);
     
     const { result } = renderHook(
-      ({ committed }) => useOptimisticUpdate(committed, mutate),
-      { initialProps: { committed: 'initial' } }
+      ({ committed }) => useOptimisticUpdate<string>(committed, mutate),
+      { initialProps: { committed: 'initial' as string } }
     );
     
     act(() => {
