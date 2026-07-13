@@ -1,152 +1,175 @@
-import { useState as a, useEffect as s, useRef as u, useCallback as i } from "react";
-function I(t, e) {
-  const [r, o] = a(t);
-  return s(() => {
-    const n = setTimeout(() => o(t), e);
-    return () => clearTimeout(n);
-  }, [t, e]), r;
+import { useCallback as e, useEffect as t, useRef as n, useState as r } from "react";
+//#region src/hooks/useDebounce.ts
+function i(e, n) {
+	let [i, a] = r(e);
+	return t(() => {
+		let t = setTimeout(() => a(e), n);
+		return () => clearTimeout(t);
+	}, [e, n]), i;
 }
-function w(t, e) {
-  const [r, o] = a(t), n = u(Date.now());
-  return s(() => {
-    const c = Date.now() - n.current;
-    if (c >= e)
-      o(t), n.current = Date.now();
-    else {
-      const l = setTimeout(() => {
-        o(t), n.current = Date.now();
-      }, e - c);
-      return () => clearTimeout(l);
-    }
-  }, [t, e]), r;
+//#endregion
+//#region src/hooks/useThrottle.ts
+function a(e, i) {
+	let [a, o] = r(e), s = n(Date.now());
+	return t(() => {
+		let t = Date.now() - s.current;
+		if (t >= i) o(e), s.current = Date.now();
+		else {
+			let n = setTimeout(() => {
+				o(e), s.current = Date.now();
+			}, i - t);
+			return () => clearTimeout(n);
+		}
+	}, [e, i]), a;
 }
-function v(t, e) {
-  const r = u(t);
-  r.current = t, s(() => {
-    if (e === null) return;
-    const o = setInterval(() => r.current(), e);
-    return () => clearInterval(o);
-  }, [e]);
+//#endregion
+//#region src/hooks/useInterval.ts
+function o(e, r) {
+	let i = n(e);
+	i.current = e, t(() => {
+		if (r === null) return;
+		let e = setInterval(() => i.current(), r);
+		return () => clearInterval(e);
+	}, [r]);
 }
-function y(t, e) {
-  const r = u(t);
-  r.current = t;
-  const o = u(void 0), n = i(() => clearTimeout(o.current), []), c = i(() => {
-    n(), o.current = setTimeout(() => r.current(), e);
-  }, [e, n]);
-  return s(() => (c(), n), [c, n]), { reset: c, clear: n };
+//#endregion
+//#region src/hooks/useTimeout.ts
+function s(r, i) {
+	let a = n(r);
+	a.current = r;
+	let o = n(void 0), s = e(() => clearTimeout(o.current), []), c = e(() => {
+		s(), o.current = setTimeout(() => a.current(), i);
+	}, [i, s]);
+	return t(() => (c(), s), [c, s]), {
+		reset: c,
+		clear: s
+	};
 }
-function D(t) {
-  const e = u(t);
-  return e.current = t, e;
+//#endregion
+//#region src/hooks/useLatest.ts
+function c(e) {
+	let t = n(e);
+	return t.current = e, t;
 }
-function T(t, e) {
-  const r = u(t);
-  r.current = t, s(() => {
-    if (typeof window > "u") return;
-    if (!("requestIdleCallback" in window)) {
-      r.current({ didTimeout: !0, timeRemaining: () => 0 });
-      return;
-    }
-    const o = requestIdleCallback((n) => r.current(n), e);
-    return () => cancelIdleCallback(o);
-  }, []);
+//#endregion
+//#region src/hooks/useIdleCallback.ts
+function l(e, r) {
+	let i = n(e);
+	i.current = e, t(() => {
+		if (typeof window > "u") return;
+		if (!("requestIdleCallback" in window)) {
+			i.current({
+				didTimeout: !0,
+				timeRemaining: () => 0
+			});
+			return;
+		}
+		let e = requestIdleCallback((e) => i.current(e), r);
+		return () => cancelIdleCallback(e);
+	}, []);
 }
-function b(t, e = 50) {
-  const [r, o] = a("");
-  return s(() => {
-    o("");
-    let n = 0;
-    const c = setInterval(() => {
-      o(t.slice(0, ++n)), n >= t.length && clearInterval(c);
-    }, e);
-    return () => clearInterval(c);
-  }, [t, e]), r;
+//#endregion
+//#region src/hooks/useTypewriter.ts
+function u(e, n = 50) {
+	let [i, a] = r("");
+	return t(() => {
+		a("");
+		let t = 0, r = setInterval(() => {
+			a(e.slice(0, ++t)), t >= e.length && clearInterval(r);
+		}, n);
+		return () => clearInterval(r);
+	}, [e, n]), i;
 }
-function k(t) {
-  const e = i(() => Math.max(0, t.getTime() - Date.now()), [t]), [r, o] = a(e);
-  s(() => {
-    const c = setInterval(() => o(e()), 1e3);
-    return () => clearInterval(c);
-  }, [e]);
-  const n = Math.floor(r / 1e3);
-  return {
-    days: Math.floor(n / 86400),
-    hours: Math.floor(n % 86400 / 3600),
-    minutes: Math.floor(n % 3600 / 60),
-    seconds: n % 60,
-    isFinished: r === 0
-  };
+//#endregion
+//#region src/hooks/useCountdown.ts
+function d(n) {
+	let i = e(() => Math.max(0, n.getTime() - Date.now()), [n]), [a, o] = r(i);
+	t(() => {
+		let e = setInterval(() => o(i()), 1e3);
+		return () => clearInterval(e);
+	}, [i]);
+	let s = Math.floor(a / 1e3);
+	return {
+		days: Math.floor(s / 86400),
+		hours: Math.floor(s % 86400 / 3600),
+		minutes: Math.floor(s % 3600 / 60),
+		seconds: s % 60,
+		isFinished: a === 0
+	};
 }
-function M() {
-  const [t, e] = a(0), [r, o] = a(!1), n = u(0), c = u(0), l = u(0);
-  l.current = t;
-  const f = i(() => {
-    e(performance.now() - n.current), c.current = requestAnimationFrame(f);
-  }, []), m = i(() => {
-    n.current = performance.now() - l.current, o(!0), c.current = requestAnimationFrame(f);
-  }, [f]), h = i(() => {
-    cancelAnimationFrame(c.current), o(!1);
-  }, []), p = i(() => {
-    cancelAnimationFrame(c.current), o(!1), e(0);
-  }, []);
-  return { elapsedMs: t, isRunning: r, start: m, stop: h, reset: p };
+//#endregion
+//#region src/hooks/useStopwatch.ts
+function f() {
+	let [t, i] = r(0), [a, o] = r(!1), s = n(0), c = n(0), l = n(0);
+	l.current = t;
+	let u = e(() => {
+		i(performance.now() - s.current), c.current = requestAnimationFrame(u);
+	}, []);
+	return {
+		elapsedMs: t,
+		isRunning: a,
+		start: e(() => {
+			s.current = performance.now() - l.current, o(!0), c.current = requestAnimationFrame(u);
+		}, [u]),
+		stop: e(() => {
+			cancelAnimationFrame(c.current), o(!1);
+		}, []),
+		reset: e(() => {
+			cancelAnimationFrame(c.current), o(!1), i(0);
+		}, [])
+	};
 }
-function R(t) {
-  const e = i(() => {
-    const n = Math.floor((Date.now() - new Date(t).getTime()) / 1e3);
-    return n < 60 ? "just now" : n < 3600 ? `${Math.floor(n / 60)}m ago` : n < 86400 ? `${Math.floor(n / 3600)}h ago` : `${Math.floor(n / 86400)}d ago`;
-  }, [t]), [r, o] = a(e);
-  return s(() => {
-    const n = setInterval(() => o(e()), 6e4);
-    return () => clearInterval(n);
-  }, [t, e]), r;
+//#endregion
+//#region src/hooks/useTimeAgo.ts
+function p(n) {
+	let i = e(() => {
+		let e = Math.floor((Date.now() - new Date(n).getTime()) / 1e3);
+		return e < 60 ? "just now" : e < 3600 ? `${Math.floor(e / 60)}m ago` : e < 86400 ? `${Math.floor(e / 3600)}h ago` : `${Math.floor(e / 86400)}d ago`;
+	}, [n]), [a, o] = r(i);
+	return t(() => {
+		let e = setInterval(() => o(i()), 6e4);
+		return () => clearInterval(e);
+	}, [n, i]), a;
 }
-function d(t, e) {
-  if (t === e) return !0;
-  if (typeof t != typeof e || t === null || e === null) return !1;
-  if (typeof t == "object") {
-    const r = Object.keys(t), o = Object.keys(e);
-    return r.length !== o.length ? !1 : r.every((n) => d(t[n], e[n]));
-  }
-  return !1;
+//#endregion
+//#region src/hooks/useDeepCompareEffect.ts
+function m(e, t) {
+	if (e === t) return !0;
+	if (typeof e != typeof t || e === null || t === null) return !1;
+	if (typeof e == "object") {
+		let n = Object.keys(e), r = Object.keys(t);
+		return n.length === r.length && n.every((n) => m(e[n], t[n]));
+	}
+	return !1;
 }
-function C(t, e) {
-  const r = u([]);
-  d(r.current, e) || (r.current = e), s(t, r.current);
+function h(e, r) {
+	let i = n([]);
+	m(i.current, r) || (i.current = r), t(e, i.current);
 }
-function j(t = "quiver") {
-  return u(
-    `${t}-${typeof crypto < "u" && crypto.randomUUID ? crypto.randomUUID().slice(0, 8) : Math.random().toString(36).slice(2, 9)}`
-  ).current;
+//#endregion
+//#region src/hooks/useRandomId.ts
+function g(e = "quiver") {
+	return n(`${e}-${typeof crypto < "u" && crypto.randomUUID ? crypto.randomUUID().slice(0, 8) : Math.random().toString(36).slice(2, 9)}`).current;
 }
-function q(t, e) {
-  const r = u({});
-  s(() => {
-    if (process.env.NODE_ENV !== "development") return;
-    const o = {};
-    for (const n of Object.keys(e))
-      r.current[n] !== e[n] && (o[n] = { from: r.current[n], to: e[n] });
-    Object.keys(o).length && console.log(`[useWhyDidYouUpdate] ${t}:`, o), r.current = e;
-  });
+//#endregion
+//#region src/hooks/useWhyDidYouUpdate.ts
+function _(e, r) {
+	let i = n({});
+	t(() => {
+		if (process.env.NODE_ENV !== "development") return;
+		let t = {};
+		for (let e of Object.keys(r)) i.current[e] !== r[e] && (t[e] = {
+			from: i.current[e],
+			to: r[e]
+		});
+		Object.keys(t).length && console.log(`[useWhyDidYouUpdate] ${e}:`, t), i.current = r;
+	});
 }
-function E(t) {
-  const e = u(void 0);
-  return e.current || (e.current = { value: t() }), e.current.value;
+//#endregion
+//#region src/hooks/useConstant.ts
+function v(e) {
+	let t = n(void 0);
+	return t.current ||= { value: e() }, t.current.value;
 }
-export {
-  E as useConstant,
-  k as useCountdown,
-  I as useDebounce,
-  C as useDeepCompareEffect,
-  T as useIdleCallback,
-  v as useInterval,
-  D as useLatest,
-  j as useRandomId,
-  M as useStopwatch,
-  w as useThrottle,
-  R as useTimeAgo,
-  y as useTimeout,
-  b as useTypewriter,
-  q as useWhyDidYouUpdate
-};
+//#endregion
+export { v as useConstant, d as useCountdown, i as useDebounce, h as useDeepCompareEffect, l as useIdleCallback, o as useInterval, c as useLatest, g as useRandomId, f as useStopwatch, a as useThrottle, p as useTimeAgo, s as useTimeout, u as useTypewriter, _ as useWhyDidYouUpdate };
