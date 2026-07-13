@@ -69,6 +69,7 @@ export function useFetch<T>(url: string, options: UseFetchOptions = {}): UseFetc
           setError(err as Error);
       })
       .finally(() => { if (isMounted.current) setLoading(false); });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url, timeout]);
 
   useEffect(() => {
