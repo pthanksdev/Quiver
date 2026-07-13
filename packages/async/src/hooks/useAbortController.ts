@@ -4,15 +4,17 @@ import { useEffect, useRef } from 'react';
 
 
 // ─── useAbortController ───────────────────────────────────────────────────────
-/**
- * Provides an AbortController that is aborted on component unmount.
- */
 export function useAbortController(): AbortController {
-  const controllerRef = useRef<AbortController>(new AbortController());
+  const controllerRef = useRef<AbortController | null>(null);
+  if (!controllerRef.current) {
+    controllerRef.current = new AbortController();
+  }
   useEffect(() => {
-    const controller = new AbortController();
-    controllerRef.current = controller;
-    return () => controller.abort();
+    return () => {
+      if (controllerRef.current) {
+        controllerRef.current.abort();
+      }
+    };
   }, []);
   return controllerRef.current;
 }
