@@ -77,7 +77,7 @@ describe('useAsync', () => {
     expect(result.current.error).toBeNull();
   });
 
-  it('should not update state if unmounted', async () => {
+  it('should not update state if unmounted', () => {
     let resolveFn: (value: string) => void;
     const promise = new Promise<string>((resolve) => {
       resolveFn = resolve;
@@ -87,14 +87,14 @@ describe('useAsync', () => {
     const { result, unmount } = renderHook(() => useAsync(fn));
     
     act(() => {
-      result.current.execute();
+      void result.current.execute();
     });
     
     expect(result.current.loading).toBe(true);
     
     unmount();
     
-    await act(async () => {
+    act(() => {
       resolveFn('success');
     });
     

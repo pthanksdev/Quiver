@@ -110,7 +110,7 @@ describe('useFetch', () => {
   });
 
   it('should trigger abort on unmount', () => {
-    const { result, unmount } = renderHook(() => useFetch('https://example.com/api/data'));
+    const { unmount } = renderHook(() => useFetch('https://example.com/api/data'));
 
     unmount();
 
