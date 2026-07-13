@@ -71,7 +71,7 @@ describe('usePolling', () => {
 
   it('should pause polling when disabled', async () => {
     const fn = vi.fn().mockResolvedValue('data');
-    const { result, rerender } = renderHook(
+    const { rerender } = renderHook(
       ({ enabled }) => usePolling(fn, 1000, enabled),
       { initialProps: { enabled: true } }
     );

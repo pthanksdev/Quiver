@@ -21,7 +21,7 @@ describe('useOptimisticUpdate', () => {
     const { result } = renderHook(() => useOptimisticUpdate('initial', mutate));
     
     act(() => {
-      result.current.update('optimistic value');
+      void result.current.update('optimistic value');
     });
     
     // Immediately after calling update, it should have the optimistic value
@@ -42,13 +42,13 @@ describe('useOptimisticUpdate', () => {
     const error = new Error('mutation failed');
     const mutate = vi.fn().mockRejectedValue(error);
     
-    const { result, rerender } = renderHook(
+    const { result } = renderHook(
       ({ committed }) => useOptimisticUpdate(committed, mutate),
       { initialProps: { committed: 'initial' } }
     );
     
     act(() => {
-      result.current.update('optimistic value');
+      void result.current.update('optimistic value');
     });
     
     // Optimistically updated

@@ -54,6 +54,7 @@ describe('useSuspenseQuery', () => {
     // Actually renderHook might just throw the error asynchronously. Let's just catch it.
     
     // We can also test the throw directly without renderHook
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const testFn = () => useSuspenseQuery('test-key-error', fn);
     
     // 1. Initial call throws the promise
@@ -69,7 +70,9 @@ describe('useSuspenseQuery', () => {
     // 3. Wait for rejection to settle
     try {
       await promise;
-    } catch (e) {}
+    } catch (e) {
+      /* ignore */
+    }
     
     // flush the event loop to ensure `.catch()` has mutated `entry2`
     await new Promise(r => setTimeout(r, 10)); 
