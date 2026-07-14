@@ -76,7 +76,9 @@ jobs:
         run: pnpm turbo run build
 
       - name: Publish packages with provenance
-        run: pnpm changeset publish --provenance
+        run: |
+          npm config set provenance true
+          pnpm changeset publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
