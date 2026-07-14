@@ -1,144 +1,188 @@
-import { useState as a, useRef as w, useCallback as d, useEffect as R } from "react";
-const P = /^https?:\/\//i;
-function q(s) {
-  const { apiKey: u, model: r = "gpt-4o", baseUrl: l = "https://api.openai.com", systemPrompt: i } = s;
-  if (!P.test(l)) throw new Error("[useAIStream] Only http/https baseUrl allowed");
-  const [f, e] = a(""), [t, o] = a(!1), [n, p] = a(null), c = w(null), h = d(() => {
-    var g;
-    (g = c.current) == null || g.abort(), o(!1);
-  }, []), m = d(() => {
-    e(""), p(null);
-  }, []);
-  return { stream: d(async (g) => {
-    var E, T;
-    (E = c.current) == null || E.abort();
-    const k = new AbortController();
-    c.current = k, e(""), o(!0), p(null);
-    try {
-      const y = [
-        ...i ? [{ role: "system", content: i }] : [],
-        { role: "user", content: g }
-      ], S = await fetch(`${l}/v1/chat/completions`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${u}` },
-        body: JSON.stringify({ model: r, messages: y, stream: !0 }),
-        signal: k.signal
-      });
-      if (!S.ok || !S.body) throw new Error(`[useAIStream] HTTP ${S.status}`);
-      const L = S.body.getReader(), O = new TextDecoder();
-      for (; ; ) {
-        const { done: v, value: x } = await L.read();
-        if (v) break;
-        const I = O.decode(x).split(`
-`).filter((b) => b.startsWith("data: "));
-        for (const b of I) {
-          const A = b.slice(6);
-          if (A === "[DONE]") break;
-          try {
-            const D = ((T = JSON.parse(A).choices[0]) == null ? void 0 : T.delta.content) ?? "";
-            e((N) => N + D);
-          } catch {
-          }
-        }
-      }
-    } catch (y) {
-      y.name !== "AbortError" && p(y);
-    } finally {
-      o(!1);
-    }
-  }, [u, l, r, i]), text: f, loading: t, error: n, abort: h, reset: m };
+import { useCallback as e, useEffect as t, useRef as n, useState as r } from "react";
+//#region src/hooks/useAIStream.ts
+var i = /^https?:\/\//i;
+function a(t) {
+	let { apiKey: a, model: o = "gpt-4o", baseUrl: s = "https://api.openai.com", systemPrompt: c } = t;
+	if (!i.test(s)) throw Error("[useAIStream] Only http/https baseUrl allowed");
+	let [l, u] = r(""), [d, f] = r(!1), [p, m] = r(null), h = n(null), g = e(() => {
+		h.current?.abort(), f(!1);
+	}, []), _ = e(() => {
+		u(""), m(null);
+	}, []);
+	return {
+		stream: e(async (e) => {
+			h.current?.abort();
+			let t = new AbortController();
+			h.current = t, u(""), f(!0), m(null);
+			try {
+				let n = [...c ? [{
+					role: "system",
+					content: c
+				}] : [], {
+					role: "user",
+					content: e
+				}], r = await fetch(`${s}/v1/chat/completions`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${a}`
+					},
+					body: JSON.stringify({
+						model: o,
+						messages: n,
+						stream: !0
+					}),
+					signal: t.signal
+				});
+				if (!r.ok || !r.body) throw Error(`[useAIStream] HTTP ${r.status}`);
+				let i = r.body.getReader(), l = new TextDecoder();
+				for (;;) {
+					let { done: e, value: t } = await i.read();
+					if (e) break;
+					let n = l.decode(t).split("\n").filter((e) => e.startsWith("data: "));
+					for (let e of n) {
+						let t = e.slice(6);
+						if (t === "[DONE]") break;
+						try {
+							let e = JSON.parse(t).choices[0]?.delta.content ?? "";
+							u((t) => t + e);
+						} catch {}
+					}
+				}
+			} catch (e) {
+				e.name !== "AbortError" && m(e);
+			} finally {
+				f(!1);
+			}
+		}, [
+			a,
+			s,
+			o,
+			c
+		]),
+		text: l,
+		loading: d,
+		error: p,
+		abort: g,
+		reset: _
+	};
 }
-const U = typeof window < "u";
-function J(s = "en-US") {
-  const [u, r] = a(""), [l, i] = a(!1), [f, e] = a(null), t = U && !!(window.webkitSpeechRecognition || window.SpeechRecognition), o = w(null), n = d(() => {
-    if (!t) {
-      e("[useSpeechRecognition] Not supported");
-      return;
-    }
-    const c = window.SpeechRecognition ?? window.webkitSpeechRecognition;
-    if (!c) return;
-    const h = new c();
-    h.lang = s, h.continuous = !0, h.interimResults = !0, h.onresult = (m) => r(Array.from(m.results).map((C) => {
-      var g;
-      return ((g = C[0]) == null ? void 0 : g.transcript) ?? "";
-    }).join("")), h.onerror = (m) => e(m.error), h.onend = () => i(!1), o.current = h, h.start(), i(!0);
-  }, [s, t]), p = d(() => {
-    var c;
-    (c = o.current) == null || c.stop(), i(!1);
-  }, []);
-  return R(() => () => {
-    var c;
-    return (c = o.current) == null ? void 0 : c.stop();
-  }, []), { transcript: u, listening: l, supported: t, start: n, stop: p, error: f };
+//#endregion
+//#region src/hooks/useSpeechRecognition.ts
+var o = typeof window < "u";
+function s(i = "en-US") {
+	let [a, s] = r(""), [c, l] = r(!1), [u, d] = r(null), f = o && !!(window.webkitSpeechRecognition || window.SpeechRecognition), p = n(null), m = e(() => {
+		if (!f) {
+			d("[useSpeechRecognition] Not supported");
+			return;
+		}
+		let e = window.SpeechRecognition ?? window.webkitSpeechRecognition;
+		if (!e) return;
+		let t = new e();
+		t.lang = i, t.continuous = !0, t.interimResults = !0, t.onresult = (e) => s(Array.from(e.results).map((e) => e[0]?.transcript ?? "").join("")), t.onerror = (e) => d(e.error), t.onend = () => l(!1), p.current = t, t.start(), l(!0);
+	}, [i, f]), h = e(() => {
+		p.current?.stop(), l(!1);
+	}, []);
+	return t(() => () => p.current?.stop(), []), {
+		transcript: a,
+		listening: c,
+		supported: f,
+		start: m,
+		stop: h,
+		error: u
+	};
 }
-const $ = typeof window < "u";
-function Q() {
-  const s = $ && "speechSynthesis" in window, [u, r] = a(!1), [l, i] = a([]);
-  R(() => {
-    if (!s) return;
-    const t = () => i(speechSynthesis.getVoices());
-    t(), speechSynthesis.onvoiceschanged = t;
-  }, [s]);
-  const f = d((t, o = {}) => {
-    if (!s) return;
-    const n = new SpeechSynthesisUtterance(t);
-    o.voice && (n.voice = o.voice), n.rate = o.rate ?? 1, n.pitch = o.pitch ?? 1, n.onstart = () => r(!0), n.onend = () => r(!1), speechSynthesis.speak(n);
-  }, [s]), e = d(() => {
-    speechSynthesis.cancel(), r(!1);
-  }, []);
-  return { speak: f, cancel: e, isSpeaking: u, voices: l, supported: s };
+//#endregion
+//#region src/hooks/useSpeechSynthesis.ts
+var c = typeof window < "u";
+function l() {
+	let n = c && "speechSynthesis" in window, [i, a] = r(!1), [o, s] = r([]);
+	return t(() => {
+		if (!n) return;
+		let e = () => s(speechSynthesis.getVoices());
+		e(), speechSynthesis.onvoiceschanged = e;
+	}, [n]), {
+		speak: e((e, t = {}) => {
+			if (!n) return;
+			let r = new SpeechSynthesisUtterance(e);
+			t.voice && (r.voice = t.voice), r.rate = t.rate ?? 1, r.pitch = t.pitch ?? 1, r.onstart = () => a(!0), r.onend = () => a(!1), speechSynthesis.speak(r);
+		}, [n]),
+		cancel: e(() => {
+			speechSynthesis.cancel(), a(!1);
+		}, []),
+		isSpeaking: i,
+		voices: o,
+		supported: n
+	};
 }
-function V(s, u = 300) {
-  const [r, l] = a(""), [i, f] = a([]), [e, t] = a(!1), o = w(), n = w(s);
-  return n.current = s, R(() => {
-    if (clearTimeout(o.current), !r.trim()) {
-      f([]);
-      return;
-    }
-    t(!0), o.current = setTimeout(() => {
-      (async () => {
-        try {
-          f(await n.current(r));
-        } catch {
-          f([]);
-        } finally {
-          t(!1);
-        }
-      })();
-    }, u);
-  }, [r, u]), { query: r, setQuery: l, suggestions: i, loading: e };
+//#endregion
+//#region src/hooks/useAutocomplete.ts
+function u(e, i = 300) {
+	let [a, o] = r(""), [s, c] = r([]), [l, u] = r(!1), d = n(), f = n(e);
+	return f.current = e, t(() => {
+		if (clearTimeout(d.current), !a.trim()) {
+			c([]);
+			return;
+		}
+		u(!0), d.current = setTimeout(() => {
+			(async () => {
+				try {
+					c(await f.current(a));
+				} catch {
+					c([]);
+				} finally {
+					u(!1);
+				}
+			})();
+		}, i);
+	}, [a, i]), {
+		query: a,
+		setQuery: o,
+		suggestions: s,
+		loading: l
+	};
 }
-function W(s, u) {
-  const [r, l] = a(""), i = (e, t) => {
-    const o = e.toLowerCase(), n = t.toLowerCase();
-    if (o.includes(n)) return 1;
-    let p = 0;
-    for (let c = 0; c < n.length; c++) o.includes(n[c] ?? "") && p++;
-    return p / n.length;
-  }, f = r.trim() ? s.map((e) => ({ item: e, score: Math.max(...u.map((t) => i(String(e[t] ?? ""), r))) })).filter((e) => e.score > 0.5).sort((e, t) => t.score - e.score).map((e) => e.item) : s;
-  return { query: r, setQuery: l, results: f };
+//#endregion
+//#region src/hooks/useSmartSearch.ts
+function d(e, t) {
+	let [n, i] = r(""), a = (e, t) => {
+		let n = e.toLowerCase(), r = t.toLowerCase();
+		if (n.includes(r)) return 1;
+		let i = 0;
+		for (let e = 0; e < r.length; e++) n.includes(r[e] ?? "") && i++;
+		return i / r.length;
+	};
+	return {
+		query: n,
+		setQuery: i,
+		results: n.trim() ? e.map((e) => ({
+			item: e,
+			score: Math.max(...t.map((t) => a(String(e[t] ?? ""), n)))
+		})).filter((e) => e.score > .5).sort((e, t) => t.score - e.score).map((e) => e.item) : e
+	};
 }
-function z(s) {
-  const [u, r] = a([]), [l, i] = a(!1), [f, e] = a(null), t = w(s);
-  return t.current = s, { classify: d(async (n) => {
-    i(!0), e(null);
-    try {
-      const p = n.getContext("2d");
-      if (!p) throw new Error("[useImageClassifier] Canvas context unavailable");
-      const c = p.getImageData(0, 0, n.width, n.height);
-      r(await t.current(c));
-    } catch (p) {
-      e(p);
-    } finally {
-      i(!1);
-    }
-  }, []), results: u, loading: l, error: f };
+//#endregion
+//#region src/hooks/useImageClassifier.ts
+function f(t) {
+	let [i, a] = r([]), [o, s] = r(!1), [c, l] = r(null), u = n(t);
+	return u.current = t, {
+		classify: e(async (e) => {
+			s(!0), l(null);
+			try {
+				let t = e.getContext("2d");
+				if (!t) throw Error("[useImageClassifier] Canvas context unavailable");
+				let n = t.getImageData(0, 0, e.width, e.height);
+				a(await u.current(n));
+			} catch (e) {
+				l(e);
+			} finally {
+				s(!1);
+			}
+		}, []),
+		results: i,
+		loading: o,
+		error: c
+	};
 }
-export {
-  q as useAIStream,
-  V as useAutocomplete,
-  z as useImageClassifier,
-  W as useSmartSearch,
-  J as useSpeechRecognition,
-  Q as useSpeechSynthesis
-};
+//#endregion
+export { a as useAIStream, u as useAutocomplete, f as useImageClassifier, d as useSmartSearch, s as useSpeechRecognition, l as useSpeechSynthesis };
