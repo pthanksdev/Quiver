@@ -5,7 +5,7 @@
   "description": "The definitive React hooks library — 13 packages, 100+ hooks.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pthanksdev/react-hooks"
+    "url": "https://github.com/pthanksdev/Quiver.git"
   },
   "scripts": {
     "build": "turbo run build",

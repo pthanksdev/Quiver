@@ -47,5 +47,9 @@
     "jsdom": "^24.0.0",
     "@vitest/coverage-v8": "^1.5.3",
     "@quiver-lib/eslint-config": "workspace:*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pthanksdev/Quiver.git"
   }
 }

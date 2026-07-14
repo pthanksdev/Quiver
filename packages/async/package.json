@@ -47,5 +47,9 @@
     "vitest": "^1.5.3",
     "jsdom": "^24.0.0",
     "@vitest/coverage-v8": "^1.5.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pthanksdev/Quiver.git"
   }
 }
